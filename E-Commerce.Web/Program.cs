@@ -3,6 +3,7 @@ using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
+using Persistence.Repositories;
 
 namespace E_Commerce.Web
 {
@@ -13,6 +14,7 @@ namespace E_Commerce.Web
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 			builder.Services.AddDbContext<StoreDbContext>(options =>
 			{
