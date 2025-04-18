@@ -1,7 +1,5 @@
-﻿namespace Domain.Models.Product
+﻿namespace Domain.Models.Product;
+public class ProductType : BaseEntity<int>
 {
-	public class ProductType:BaseEntity<int>
-	{
-        public string Name { get; set; } = default!;
-    }
+	public string Name { get; set; } = default!;
 }

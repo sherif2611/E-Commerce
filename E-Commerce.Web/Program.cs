@@ -1,16 +1,19 @@
 
+using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistence.Data;
 
 namespace E_Commerce.Web
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 			builder.Services.AddDbContext<StoreDbContext>(options =>
 			{
 				var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -22,7 +25,7 @@ namespace E_Commerce.Web
 			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
-
+			await InitializeDbAsync(app);
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
@@ -38,6 +41,12 @@ namespace E_Commerce.Web
 			app.MapControllers();
 
 			app.Run();
+		}
+		public static async Task InitializeDbAsync(WebApplication app)
+		{
+			using var scope = app.Services.CreateScope();
+			var dbInitializer=scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+			await dbInitializer.InitializeAsync();
 		}
 	}
 }

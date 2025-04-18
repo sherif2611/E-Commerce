@@ -1,7 +1,5 @@
-﻿namespace Domain.Models
+﻿namespace Domain.Models;
+public class BaseEntity<TKey>
 {
-	public class BaseEntity<TKey>
-	{
-        public TKey Id { get; set; } // PK
-    }
+	public TKey Id { get; set; } // PK
 }
